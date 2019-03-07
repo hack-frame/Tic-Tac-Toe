@@ -3,14 +3,19 @@
 Player::Player(){}
 Player::~Player(){}
 
+char	Player::Get_symbol()
+{
+	return (this->_symbol);
+}
+
 bool	Player::Check_index(int ind_x, int ind_y)
 {
 	std::vector<data_player>::iterator start = _data_player.begin();
 	std::vector<data_player>::iterator end = _data_player.end();
+	if (ind_x > 7 || ind_y > 7) return false;
 	while (start < end)
 	{
-		if (start->index_x == ind_x && start->index_y == ind_y)
-			return false;
+		if (start->index_x == ind_x && start->index_y == ind_y) return false;
 		++start;
 	}
 	return true;
@@ -18,17 +23,17 @@ bool	Player::Check_index(int ind_x, int ind_y)
 
 bool	Player::Set_value(int x, int y, char (&buf)[8][8], char c)
 {
-	if ((x >= 0 && x < 416) && (y >= 0 && y < 440))
+	if ((x >= 0 && x < 453) && (y >= 0 && y < 453))
 	{
+		_symbol = c;
 		data_player data;
-		data.index_x = x / 52;
+		data.index_x = x / 57;
 		data.index_y = y / 55;
-		// printf("ind x : %d --- ind y : %d\n", data.index_x, data.index_y);
+		printf("index x : %d\n", data.index_x);
 		if (!Check_index(data.index_x, data.index_y) || buf[data.index_y][data.index_x] != '-')
 			return false;
-		// printf("true\n");
-		data.pos_x = 80 + (52 * data.index_x);
-		data.pos_y = 57 + (55 * data.index_y);
+		data.pos_x = 57 + (57 * data.index_x);
+		data.pos_y = 50 + (56 * data.index_y);
 		_data_player.push_back(data);
 		buf[data.index_y][data.index_x] = c;
 		return true;
@@ -45,8 +50,6 @@ void	Player::Draw_player(SDL_Renderer *renderer, SDL_Texture	*icon)
 		std::vector<data_player>::iterator end = _data_player.end();
 		while (start < end)
 		{
-			// printf("index x :  %d\n", start->index_x);
-			// printf("index y :  %d\n", start->index_y);
 			_apply.ApplySurface(start->pos_x, start->pos_y, icon, renderer);
 			++start;
 		}

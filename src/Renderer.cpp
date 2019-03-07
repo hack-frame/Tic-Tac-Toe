@@ -1,9 +1,4 @@
 #include "Renderer.hpp"
-#define F_AG "fonts/AG.ttf"
-# define F_ARIAL 	"fonts/ARIAL.TTF"
-# define F_MOR 	"fonts/MORPHEUS.TTF"
-# define F_ICE  "fonts/LadyIceRevisited.ttf"
-# define F_OPEN  "fonts/OpenSans-Semibold.ttf"
 
 Renderer::Renderer(){}
 Renderer::~Renderer(){}
@@ -29,7 +24,7 @@ Renderer::Renderer(int x, int y, int width, int height)
 
 void			Renderer::init_lib(){
 
-	if ((window = SDL_CreateWindow("Crimson",
+	if ((window = SDL_CreateWindow("Tic Tac Toe",
 		_x, _y, _width, _height, SDL_WINDOW_OPENGL)))
 			if ((renderer = SDL_CreateRenderer(window, -1,
 				SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)))
@@ -40,15 +35,15 @@ void			Renderer::init_lib(){
 
 void			Renderer::load_textures(){
 
-	_back = _apply.load_texture("./MediaFiles/back.png", renderer);
-	_image[0] = _apply.load_texture("./MediaFiles/player1.png", renderer);
-	_image[1] = _apply.load_texture("./MediaFiles/player2.png", renderer);
+	_image[0] = _apply.load_texture("./MediaFiles/back.png", renderer);
+	_image[1] = _apply.load_texture("./MediaFiles/player1.png", renderer);
+	_image[2] = _apply.load_texture("./MediaFiles/player2.png", renderer);
+	_image[3] = _apply.load_texture("./MediaFiles/massage.png", renderer);
 }
 
 bool			Renderer::key_event(){
 	
 	SDL_Event	event;
-	const Uint8 *keys = SDL_GetKeyboardState(NULL);
 	while (SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
@@ -60,58 +55,75 @@ bool			Renderer::key_event(){
 }
 
 void			Renderer::mouse_event(){
-
 	SDL_PumpEvents();
 	int x, y;
 	static int count;
-	static bool tmp = false;
-	if ((SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT)) && count > 20)
-	{
-		if (_multiplayer)
-			_move ? (!_player_1.Set_value(x, y, _map, 'x') ? _move = true : _move = false) :
-				!_player_2.Set_value(x, y, _map, 'o') ? _move = false : _move = true;
-		else
+	static bool rand_1 = false;
+	static bool rand_2 = false;
+	if ((SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT)) && count > 60){
+		if (_menu.Get_game_mod() == 1)
+			_move ? (!_player_1.Set_value(x - 54, y - 42, _map, 'x') ? _move = true : _move = false) :
+				!_player_2.Set_value(x - 54, y - 42, _map, 'o') ? _move = false : _move = true;
+		else if (_menu.Get_game_mod() == 2)
 		{
-			if (_player_1.Set_value(x - 80, y - 54, _map, 'x'))
+			if (_player_1.Set_value(x - 54, y - 42, _map, 'x'))
 			{
-				if (tmp)
-					_algorithm.Start_algorithm(_map, 'o', _player_2);
-				else
-					_player_2.Set_value((rand() % 8 * 52),rand() % 8 * 55, _map, 'o');
-				tmp = true;
+				rand_2 ? (_algorithm.Start_algorithm(_map, _player_2)) :
+				_player_2.Set_value((rand() % 8 * 55),rand() % 8 * 55, _map, 'o');
+				rand_2 = true;
 			}
 		}
-
-
+		else if (_menu.Get_game_mod() == 3)
+		{
+			rand_1 ? (_algorithm.Start_algorithm(_map, _player_1)) :
+				_player_2.Set_value((rand() % 8 * 55),rand() % 8 * 55, _map, 'x');
+		
+			rand_2 ? (_algorithm.Start_algorithm(_map, _player_2)) :
+				_player_2.Set_value((rand() % 8 * 55),rand() % 8 * 55, _map, 'o');
+			rand_1 = true;
+			rand_2 = true;
+		}
 		count = 0;
 	}
 	count++;
 }
 
-void			Renderer::game(){
-	// _map[rand() % 8][rand() % 8] = 'o';
+// void			Renderer::Reset_mass_map(){
+// 	for(int y = 0; y < 8; y++)
+// 		for (int x = 0; x < 8; ++x)
+// 		{
+// 			/* code */
+// 		}
+// }
+
+void			Renderer::Message_event()
+{
 	while (1)
 	{
 		if (key_event())
+		{
+			_algorithm.Reset_winner();
 			break;
-		mouse_event();
-		_apply.ApplySurface(0,0,_back,renderer);
-		_player_1.Draw_player(renderer, _image[0]);
-		_player_2.Draw_player(renderer, _image[1]);
-		_apply.writte_text(F_OPEN, "Point", 600, 100, 24, renderer);
-		//_algorithm.Start_algorithm(_map, 'x', _player_2);
+		}
+		_apply.ApplySurface(510, 300,_image[3],renderer);
 		SDL_RenderPresent(renderer);
 	}
-	int y = -1;
-	while (++y < 8)
-	{
-		int x = -1;
-		while (++x < 8)
+}
+
+void			Renderer::game(){
+
+	_menu.Action(renderer);
+	if (_menu.Get_game_mod() > 0)
+		while (1)
 		{
-			printf("%c ", _map[y][x]);
+			if (key_event()) break;
+			if (_algorithm.Name_winner() == -1) mouse_event();
+			else (Message_event());
+			_apply.ApplySurface(0,0,_image[0],renderer);
+			_player_1.Draw_player(renderer, _image[1]);
+			_player_2.Draw_player(renderer, _image[2]);
+			SDL_RenderPresent(renderer);
 		}
-		printf("\n");
-	}
 }
 
 

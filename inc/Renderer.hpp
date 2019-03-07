@@ -4,6 +4,7 @@
 #include "header.hpp"
 #include "Player.hpp"
 #include "Algorithm.hpp"
+#include "Menu_action.hpp"
 
 class Renderer
 {
@@ -11,12 +12,14 @@ private:
 	SDL_Window		*window;
 	SDL_Renderer	*renderer;
 	SDL_Texture		*texture;
-	SDL_Texture		*_back;
-	SDL_Texture		*_image[2];
+	SDL_Texture		*_image[4];
+
 	Surface			_apply;
 	Player			_player_1;
 	Player			_player_2;
 	Algorithm		_algorithm;
+	Menu			_menu;
+	
 	int				_x;
 	int				_y;
 	int				_width;
@@ -24,9 +27,11 @@ private:
 	bool			_multiplayer;
 	bool			_move;
 	char			_map[8][8];
+	
 	void			load_textures();
 	void			mouse_event();
 	bool			key_event();
+	void			init_lib();
 	Renderer();
 /*52 x 52*/
 /*420 x 440*/
@@ -34,8 +39,8 @@ private:
 public:
 	Renderer(int x, int y, int width, int height);
 	~Renderer();
-	void			init_lib();
 	void			game();
+	void			Message_event();
 };
 
 #endif
