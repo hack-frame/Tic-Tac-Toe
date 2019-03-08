@@ -8,7 +8,6 @@ class Algorithm
 {
 private:
 	int 		_mass_map[8][8];
-	std::string _winner;
 	char		_symbol;
 
 	void	Free_mass_map();
@@ -24,7 +23,7 @@ public:
 	~Algorithm();
 	bool		Start_algorithm(char (&map)[8][8], Player &player);
 	char		Find_winner(char map[8][8]);
-	bool		Who_winner(char map[8][8]);
+	std::string	Who_winner(char map[8][8]);
 	int			Name_winner();
 	void		Reset_winner();
 };

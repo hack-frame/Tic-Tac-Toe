@@ -29,7 +29,7 @@ bool	Player::Set_value(int x, int y, char (&buf)[8][8], char c)
 		data_player data;
 		data.index_x = x / 57;
 		data.index_y = y / 55;
-		printf("index x : %d\n", data.index_x);
+		//printf("index x : %d\n", data.index_x);
 		if (!Check_index(data.index_x, data.index_y) || buf[data.index_y][data.index_x] != '-')
 			return false;
 		data.pos_x = 57 + (57 * data.index_x);

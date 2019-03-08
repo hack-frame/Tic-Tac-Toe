@@ -5,8 +5,6 @@ Renderer::~Renderer(){}
 
 Renderer::Renderer(int x, int y, int width, int height)
 {
-	_x = x;
-	_y = y;
 	_width = width;
 	_height = height;
 	_move = true;
@@ -17,15 +15,15 @@ Renderer::Renderer(int x, int y, int width, int height)
 		while (++tm_y < 8)
 			_map[tm_x][tm_y] = '-';
 	}
-	init_lib();
+	init_lib(x, y);
 	load_textures();
 }
 
 
-void			Renderer::init_lib(){
+void			Renderer::init_lib(int x, int y){
 
 	if ((window = SDL_CreateWindow("Tic Tac Toe",
-		_x, _y, _width, _height, SDL_WINDOW_OPENGL)))
+		x, y, _width, _height, SDL_WINDOW_OPENGL)))
 			if ((renderer = SDL_CreateRenderer(window, -1,
 				SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)))
 					if ((texture = SDL_CreateTexture(renderer,
@@ -58,9 +56,9 @@ void			Renderer::mouse_event(){
 	SDL_PumpEvents();
 	int x, y;
 	static int count;
-	static bool rand_1 = false;
-	static bool rand_2 = false;
-	if ((SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT)) && count > 60){
+	static bool rand_1;
+	static bool rand_2;
+	if ((SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT)) && count > 40){
 		if (_menu.Get_game_mod() == 1)
 			_move ? (!_player_1.Set_value(x - 54, y - 42, _map, 'x') ? _move = true : _move = false) :
 				!_player_2.Set_value(x - 54, y - 42, _map, 'o') ? _move = false : _move = true;
@@ -88,38 +86,35 @@ void			Renderer::mouse_event(){
 	count++;
 }
 
-// void			Renderer::Reset_mass_map(){
-// 	for(int y = 0; y < 8; y++)
-// 		for (int x = 0; x < 8; ++x)
-// 		{
-// 			/* code */
-// 		}
-// }
-
 void			Renderer::Message_event()
 {
 	while (1)
 	{
+		_player_1.Draw_player(renderer, _image[1]);
+		_player_2.Draw_player(renderer, _image[2]);
+		_apply.writte_text("WINNER IS", 580, 350, 40, false,renderer);
+		_apply.writte_text(_algorithm.Who_winner(_map).c_str(), 580, 400, 40, true,renderer);
+		SDL_RenderPresent(renderer);
 		if (key_event())
 		{
-			_algorithm.Reset_winner();
-			break;
+			//_algorithm.Reset_winner();
+			//break;
+			exit(1);
 		}
-		_apply.ApplySurface(510, 300,_image[3],renderer);
-		SDL_RenderPresent(renderer);
 	}
 }
 
-void			Renderer::game(){
+void			Renderer::Game(){
 
 	_menu.Action(renderer);
 	if (_menu.Get_game_mod() > 0)
 		while (1)
 		{
 			if (key_event()) break;
-			if (_algorithm.Name_winner() == -1) mouse_event();
+			if (_algorithm.Who_winner(_map) == "nul") mouse_event();
 			else (Message_event());
 			_apply.ApplySurface(0,0,_image[0],renderer);
+			_apply.ApplySurface(510, 300,_image[3],renderer);
 			_player_1.Draw_player(renderer, _image[1]);
 			_player_2.Draw_player(renderer, _image[2]);
 			SDL_RenderPresent(renderer);

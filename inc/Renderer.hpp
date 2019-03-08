@@ -20,8 +20,6 @@ private:
 	Algorithm		_algorithm;
 	Menu			_menu;
 	
-	int				_x;
-	int				_y;
 	int				_width;
 	int				_height;
 	bool			_multiplayer;
@@ -31,7 +29,7 @@ private:
 	void			load_textures();
 	void			mouse_event();
 	bool			key_event();
-	void			init_lib();
+	void			init_lib(int x, int y);
 	Renderer();
 /*52 x 52*/
 /*420 x 440*/
@@ -39,7 +37,7 @@ private:
 public:
 	Renderer(int x, int y, int width, int height);
 	~Renderer();
-	void			game();
+	void			Game();
 	void			Message_event();
 };
 

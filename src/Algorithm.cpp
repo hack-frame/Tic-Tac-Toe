@@ -3,8 +3,7 @@
 Algorithm::Algorithm(){}
 Algorithm::~Algorithm(){}
 
-int		Algorithm::Length_max_attack(char map[8][8], char c, int pos_x, int pos_y, int pl_x, int pl_y, bool flag)
-{
+int		Algorithm::Length_max_attack(char map[8][8], char c, int pos_x, int pos_y, int pl_x, int pl_y, bool flag){
 	int count = -1;
 	while (++count < 6 && Is_in_zone(pos_x) && Is_in_zone(pos_y))
 	{
@@ -18,8 +17,7 @@ int		Algorithm::Length_max_attack(char map[8][8], char c, int pos_x, int pos_y, 
 	return count;
 }
 
-char		Algorithm::Find_winner(char map[8][8])
-{
+char		Algorithm::Find_winner(char map[8][8]){
 	int count = 0;
 	int dash = 0;
 	int y = -1;
@@ -45,9 +43,16 @@ char		Algorithm::Find_winner(char map[8][8])
 	return ('-');
 }
 
-bool 	Algorithm::Who_winner(char map[8][8])
-{
+std::string 	Algorithm::Who_winner(char map[8][8]){
 	char result = Find_winner(map);
+	if (result != '-')
+	{
+		if (result == '=') return ("DRAW");
+		else if (result == 'x') return ("PLAYER 1");
+		else if (result == 'o') return ("PLAYER 2");
+	}
+	return ("nul");
+	/*char result = Find_winner(map);
 	if (result != '-')
 	{
 		if (result == '=') _winner = "DRAW";
@@ -55,31 +60,20 @@ bool 	Algorithm::Who_winner(char map[8][8])
 		else if (result == 'o') _winner = "PLAYER 2";
 		return true;
 	}
-	else return false;
+	else return false;*/
 }
 
-void	Algorithm::Reset_winner()
-{
-	_winner = "";
+void	Algorithm::Reset_winner(){
+	//_winner = "nul";
 }
 
-int		Algorithm::Name_winner()
-{
-	if (_winner == "PLAYER 1") return 1;
-	else if (_winner == "PLAYER 2") return 2; 
-	else if (_winner == "DRAW") return 0;
-	else return -1;
-}
-
-bool	Algorithm::Is_in_zone(int x)
-{
+bool	Algorithm::Is_in_zone(int x){
 	if (x >= 0 && x <= 7)
 		return true;
 	return false;
 }
 
-void	Algorithm::Free_mass_map()
-{
+void	Algorithm::Free_mass_map(){
 	int x = -1;
 	while (++x < 8)
 	{
@@ -89,8 +83,7 @@ void	Algorithm::Free_mass_map()
 	}
 }
 
-void	Algorithm::Made_mass_position(char map[8][8], char c, int pos_x, int pos_y, int pl_x, int pl_y)
-{
+void	Algorithm::Made_mass_position(char map[8][8], char c, int pos_x, int pos_y, int pl_x, int pl_y){
 	int count = -1;
 	float koef = (_symbol == c ? 1.1 : 1.5);
 	while (++count < 6 && Is_in_zone(pos_x) && Is_in_zone(pos_y))
@@ -106,8 +99,7 @@ void	Algorithm::Made_mass_position(char map[8][8], char c, int pos_x, int pos_y,
 	}
 }
 
-void	Algorithm::Made_mass_map(char map[8][8], char c, int pos_x, int pos_y)
-{
+void	Algorithm::Made_mass_map(char map[8][8], char c, int pos_x, int pos_y){
 	if ((Length_max_attack(map, c, pos_x, pos_y + 1, 0, 1, false) +
 		Length_max_attack(map, c, pos_x, pos_y - 1, 0, -1, false)) >= 4)
 	{
@@ -134,8 +126,7 @@ void	Algorithm::Made_mass_map(char map[8][8], char c, int pos_x, int pos_y)
 	}
 }
 
-void	Algorithm::Find_best_place(char (&map)[8][8], Player &player)
-{
+void	Algorithm::Find_best_place(char (&map)[8][8], Player &player){
 	int max = 0;
 	int x = -1;
 	int pos_x;
@@ -154,8 +145,7 @@ void	Algorithm::Find_best_place(char (&map)[8][8], Player &player)
 	player.Set_value(pos_x * 57, pos_y * 56, map, player.Get_symbol());
 }
 
-void	Algorithm::Busy_place(char (&map)[8][8])
-{
+void	Algorithm::Busy_place(char (&map)[8][8]){
 	int x = -1;
 	while (++x < 8)
 	{
@@ -168,8 +158,7 @@ void	Algorithm::Busy_place(char (&map)[8][8])
 	}
 }
 
-bool	Algorithm::Start_algorithm(char (&map)[8][8],Player &player)
-{
+bool	Algorithm::Start_algorithm(char (&map)[8][8],Player &player){
 	_symbol = player.Get_symbol();
 	Free_mass_map();
 	int x = - 1;
@@ -193,11 +182,11 @@ bool	Algorithm::Start_algorithm(char (&map)[8][8],Player &player)
 	// 	printf("\n");
 	// }
 	// printf("\n\n\n");
-	if (Who_winner(map))
+	/*if (Who_winner(map))
 	{
 		printf("true\n");
 		return true;
-	}
+	}*/
 	return false;
 }
 
