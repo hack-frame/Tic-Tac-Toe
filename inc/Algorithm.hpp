@@ -10,13 +10,13 @@ private:
 	int 		_mass_map[8][8];
 	char		_symbol;
 
-	void	Free_mass_map();
-	bool	Is_in_zone(int x);
-	void	Made_mass_map(char map[8][8], char c, int pos_x, int pos_y);
-	void	Made_mass_position(char map[8][8], char c, int pos_x, int pos_y, int pl_x, int pl_y);
-	void	Find_best_place(char (&map)[8][8], Player  &player);
-	void	Busy_place(char (&map)[8][8]);
-	int		Length_max_attack(char map[8][8], char c, int pos_x, int pos_y, int pl_x, int pl_y, bool flag);
+	bool		Is_in_zone(int x);
+	void		Made_mass_map(char map[8][8], char c, int pos_x, int pos_y);
+	void		Made_mass_position(char map[8][8], char c, int pos_x, int pos_y, int pl_x, int pl_y);
+	void		Find_best_place(char (&map)[8][8], Player  &player);
+	void		Busy_place(char (&map)[8][8]);
+	int			Length_max_attack(char map[8][8], char c, int pos_x, int pos_y, int pl_x, int pl_y, bool flag);
+	void		Free_mass_map();
 
 public:
 	Algorithm();
@@ -25,7 +25,7 @@ public:
 	char		Find_winner(char map[8][8]);
 	std::string	Who_winner(char map[8][8]);
 	int			Name_winner();
-	void		Reset_winner();
+	void		Reset_winner(char (&map)[8][8]);
 };
 
 #endif

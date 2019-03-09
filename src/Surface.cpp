@@ -3,14 +3,6 @@
 Surface::Surface(){}
 Surface::~Surface(){}
 
-struct		font_data
-{
-	SDL_Surface		*font_surf;
-	SDL_Texture		*font_textr;
-	TTF_Font		*font_ttf;
-	SDL_Rect		font_rect;
-};
-
 void			 Surface::ApplySurface(int x, int y, SDL_Texture *tex, SDL_Renderer *rend)
 {
    SDL_Rect pos;
@@ -20,7 +12,7 @@ void			 Surface::ApplySurface(int x, int y, SDL_Texture *tex, SDL_Renderer *rend
    SDL_RenderCopy(rend, tex, NULL, &pos);
 }
 
-SDL_Surface		*Surface::load_surface(const char *path)
+SDL_Surface		*Surface::Load_surface(const char *path)
 {
 	SDL_Surface	*texture;
 
@@ -33,11 +25,11 @@ SDL_Surface		*Surface::load_surface(const char *path)
 	return (texture);
 }
 
-SDL_Texture 	*Surface::load_texture(std::string file, SDL_Renderer *renderer)
+SDL_Texture 	*Surface::Load_texture(std::string file, SDL_Renderer *renderer)
 {
 	SDL_Surface *loadedImage = nullptr;
 	SDL_Texture *texture = nullptr;
-	loadedImage = load_surface(file.c_str());
+	loadedImage = Load_surface(file.c_str());
 	if (loadedImage != nullptr){
 		texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
 		SDL_FreeSurface(loadedImage);
@@ -47,7 +39,7 @@ SDL_Texture 	*Surface::load_texture(std::string file, SDL_Renderer *renderer)
 	return texture;
 }
 
-bool			Surface::writte_text(std::string text, int x, int y, int font_size, bool num, SDL_Renderer *ren)
+bool			Surface::Writte_text(std::string text, int x, int y, int font_size, bool num, SDL_Renderer *ren)
 {
 	font_data _font_data;
 	int tw;
@@ -76,7 +68,7 @@ bool			Surface::writte_text(std::string text, int x, int y, int font_size, bool 
 	return (1);
 }
 
-void			Surface::fliping(int x, int y, SDL_Rect* clip, double angle,
+void			Surface::Fliping(int x, int y, SDL_Rect* clip, double angle,
 				SDL_Point* center, SDL_RendererFlip flip, SDL_Texture *surf,
 				SDL_Renderer	*gRenderer)
 {

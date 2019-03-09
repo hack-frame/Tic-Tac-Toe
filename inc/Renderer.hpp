@@ -12,33 +12,29 @@ private:
 	SDL_Window		*window;
 	SDL_Renderer	*renderer;
 	SDL_Texture		*texture;
-	SDL_Texture		*_image[4];
-
+	SDL_Texture		*_image[5];
 	Surface			_apply;
 	Player			_player_1;
 	Player			_player_2;
 	Algorithm		_algorithm;
 	Menu			_menu;
 	
-	int				_width;
-	int				_height;
-	bool			_multiplayer;
 	bool			_move;
 	char			_map[8][8];
-	
-	void			load_textures();
-	void			mouse_event();
-	bool			key_event();
-	void			init_lib(int x, int y);
+	bool			_side;
+
+	void			Load_textures();
+	void			Mouse_event();
+	bool			Key_event();
+	void			Init_lib(int x, int y);
+	bool			Message_event();
+	void			Draw_delay(int x);
 	Renderer();
-/*52 x 52*/
-/*420 x 440*/
-/*74 x 50*/
+
 public:
-	Renderer(int x, int y, int width, int height);
+	Renderer(int x, int y);
 	~Renderer();
 	void			Game();
-	void			Message_event();
 };
 
 #endif

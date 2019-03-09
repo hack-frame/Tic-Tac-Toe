@@ -19,13 +19,17 @@ private:
 	std::vector<data_player> _data_player;
 	Surface					_apply;
 	char					_symbol;
-	//SDL_Texture		*_icon;
+	int						_wins;
+
 public:
 	Player();
 	~Player();
-	bool	Set_value(int x, int y, char (&buf)[8][8], char c);
-	void	Draw_player(SDL_Renderer *renderer, SDL_Texture	*icon);
-	char	Get_symbol();
+	bool					Set_value(int x, int y, char (&buf)[8][8], char c);
+	void					Draw_player(SDL_Renderer *renderer, SDL_Texture	*icon);
+	char					Get_symbol();
+	void					Set_wins();
+	void					Set_wins(int x);
+	void					Free_data();
 };
 
 #endif

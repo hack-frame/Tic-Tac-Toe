@@ -21,9 +21,7 @@ private:
 	
 	bool			Key_event(std::string str);
 	void			Draw_map();
-/*52 x 52*/
-/*420 x 440*/
-/*74 x 50*/
+
 public:
 	ConsoleGame();
 	~ConsoleGame();
